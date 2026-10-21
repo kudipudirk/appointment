@@ -1,0 +1,481 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Book a Slot ✦</title>
+<meta name="description" content="Book your slot with me.">
+<meta name="theme-color" content="#0a0907">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;0,700;1,500&family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#0a0907; --surface:#13110d; --surface-2:#1a1712;
+    --line:rgba(212,175,55,.18); --line-strong:rgba(212,175,55,.45);
+    --gold:#d4af37; --gold-soft:#e9cf7a;
+    --gold-grad:linear-gradient(120deg,#a8842c 0%,#f6e27a 25%,#d4af37 50%,#f3d77a 75%,#a8842c 100%);
+    --text:#f4ecd8; --muted:#9c927c; --danger:#e0816b;
+    --radius:18px;
+    --serif:"Cormorant Garamond",Georgia,serif;
+    --sans:"Manrope",system-ui,-apple-system,sans-serif;
+  }
+  *{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
+  html{scroll-behavior:smooth}
+  body{
+    background:var(--bg); color:var(--text); font-family:var(--sans);
+    min-height:100vh; overflow-x:hidden; line-height:1.5;
+    background-image:
+      radial-gradient(ellipse 80% 50% at 50% -10%, rgba(212,175,55,.16), transparent 60%),
+      radial-gradient(ellipse 60% 40% at 100% 100%, rgba(212,175,55,.07), transparent 60%);
+    background-attachment:fixed;
+  }
+  /* film grain */
+  body::before{
+    content:"";position:fixed;inset:0;pointer-events:none;z-index:0;opacity:.07;
+    background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='3'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  }
+  .dust{position:fixed;inset:0;pointer-events:none;z-index:0;overflow:hidden}
+  .dust span{
+    position:absolute;bottom:-10px;width:3px;height:3px;border-radius:50%;
+    background:var(--gold-soft);box-shadow:0 0 8px 2px rgba(233,207,122,.6);
+    animation:rise linear infinite;opacity:0;
+  }
+  @keyframes rise{
+    0%{transform:translateY(0) translateX(0);opacity:0}
+    10%{opacity:.9} 90%{opacity:.6}
+    100%{transform:translateY(-110vh) translateX(30px);opacity:0}
+  }
+
+  .wrap{position:relative;z-index:1;max-width:520px;margin:0 auto;padding:48px 16px 64px}
+
+  /* ---------- HERO ---------- */
+  .hero{text-align:center;margin-bottom:40px;animation:fadeUp .9s ease both}
+  .ring{
+    width:112px;height:112px;margin:0 auto 22px;border-radius:50%;padding:2px;position:relative;
+    background:conic-gradient(from 0deg,#a8842c,#f6e27a,#d4af37,#7a5f1e,#f3d77a,#a8842c);
+    animation:spin 8s linear infinite;
+  }
+  .ring-inner{
+    width:100%;height:100%;border-radius:50%;background:var(--bg);
+    display:grid;place-items:center;animation:spin 8s linear infinite reverse;
+    overflow:hidden;
+  }
+  .ring-inner img{width:100%;height:100%;object-fit:cover}
+  .mono{font-family:var(--serif);font-size:48px;font-weight:600;font-style:italic}
+  @keyframes spin{to{transform:rotate(360deg)}}
+
+  .gold-text{
+    background:var(--gold-grad);background-size:200% auto;
+    -webkit-background-clip:text;background-clip:text;color:transparent;
+    animation:shine 5s linear infinite;
+  }
+  @keyframes shine{to{background-position:200% center}}
+
+  .status{
+    display:inline-flex;align-items:center;gap:8px;font-size:11px;letter-spacing:.22em;
+    text-transform:uppercase;color:var(--gold-soft);border:1px solid var(--line);
+    padding:6px 14px;border-radius:99px;margin-bottom:18px;background:rgba(212,175,55,.04);
+  }
+  .pulse{width:7px;height:7px;border-radius:50%;background:#7fe0a0;box-shadow:0 0 0 0 rgba(127,224,160,.6);animation:pulse 1.8s infinite}
+  @keyframes pulse{70%{box-shadow:0 0 0 8px rgba(127,224,160,0)}100%{box-shadow:0 0 0 0 rgba(127,224,160,0)}}
+
+  h1{font-family:var(--serif);font-weight:600;font-size:clamp(42px,12vw,60px);line-height:1;letter-spacing:-.01em}
+  .tagline{font-family:var(--serif);font-style:italic;font-size:20px;color:var(--muted);margin-top:10px}
+  .handle{display:inline-block;margin-top:14px;color:var(--gold);font-size:14px;text-decoration:none;font-weight:600;letter-spacing:.04em}
+  .handle:hover{color:var(--gold-soft)}
+
+  .divider{display:flex;align-items:center;gap:14px;color:var(--gold);margin:8px 0 36px;font-size:12px}
+  .divider::before,.divider::after{content:"";flex:1;height:1px;background:linear-gradient(90deg,transparent,var(--line-strong),transparent)}
+
+  /* ---------- STEPS ---------- */
+  .step{margin-bottom:34px;animation:fadeUp .9s ease both}
+  .step:nth-of-type(2){animation-delay:.1s}.step:nth-of-type(3){animation-delay:.2s}.step:nth-of-type(4){animation-delay:.3s}
+  .step-head{display:flex;align-items:baseline;gap:12px;margin-bottom:14px}
+  .step-num{font-family:var(--serif);font-size:15px;color:var(--gold);font-style:italic}
+  .step-title{font-family:var(--serif);font-size:26px;font-weight:600}
+  .step-hint{margin-left:auto;font-size:12px;color:var(--muted)}
+
+  .services{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+  .svc{
+    text-align:left;background:var(--surface);border:1px solid var(--line);border-radius:var(--radius);
+    padding:16px;color:var(--text);cursor:pointer;font-family:inherit;transition:all .25s ease;position:relative;overflow:hidden;
+  }
+  .svc:hover{border-color:var(--line-strong);transform:translateY(-2px)}
+  .svc .no{font-family:var(--serif);font-size:30px;font-style:italic;color:var(--gold);line-height:1;display:block;margin-bottom:10px}
+  .svc .t{font-weight:700;font-size:15px;display:block}
+  .svc .d{font-size:12px;color:var(--muted)}
+  .svc.on{border-color:var(--gold);background:linear-gradient(160deg,rgba(212,175,55,.16),var(--surface) 70%);box-shadow:0 0 0 1px var(--gold),0 10px 30px -10px rgba(212,175,55,.4)}
+  .svc.on::after{content:"✦";position:absolute;top:12px;right:14px;color:var(--gold)}
+
+  .days{display:flex;gap:10px;overflow-x:auto;padding:4px 2px 10px;scroll-snap-type:x mandatory;scrollbar-width:none}
+  .days::-webkit-scrollbar{display:none}
+  .day{
+    flex:0 0 66px;scroll-snap-align:start;background:var(--surface);border:1px solid var(--line);border-radius:16px;
+    padding:12px 0;text-align:center;color:var(--text);cursor:pointer;font-family:inherit;transition:all .25s;
+  }
+  .day .dw{font-size:10px;letter-spacing:.18em;color:var(--muted);display:block}
+  .day .dn{font-family:var(--serif);font-size:28px;font-weight:600;display:block;line-height:1.15}
+  .day .dm{font-size:10px;letter-spacing:.14em;color:var(--muted);display:block}
+  .day:hover:not(:disabled){border-color:var(--line-strong)}
+  .day.on{background:var(--gold-grad);background-size:200% auto;border-color:transparent;color:#1a1408}
+  .day.on .dw,.day.on .dm{color:#3a2c0c}
+  .day:disabled{opacity:.28;cursor:not-allowed}
+
+  .times{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
+  .time{
+    background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:13px 4px;
+    color:var(--text);font-family:inherit;font-weight:600;font-size:14px;cursor:pointer;transition:all .2s;
+  }
+  .time:hover:not(:disabled){border-color:var(--line-strong)}
+  .time.on{border-color:var(--gold);color:var(--gold-soft);background:rgba(212,175,55,.1);box-shadow:0 0 0 1px var(--gold)}
+  .time:disabled{opacity:.3;cursor:not-allowed;text-decoration:line-through}
+  .empty{grid-column:1/-1;text-align:center;color:var(--muted);font-size:13px;padding:18px;border:1px dashed var(--line);border-radius:12px}
+
+  .field{margin-bottom:12px}
+  .field label{display:block;font-size:11px;letter-spacing:.18em;text-transform:uppercase;color:var(--muted);margin-bottom:6px}
+  .field input,.field textarea{
+    width:100%;background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:14px;
+    color:var(--text);font-family:inherit;font-size:16px;transition:border-color .2s;outline:none;resize:none;
+  }
+  .field input:focus,.field textarea:focus{border-color:var(--gold)}
+  .field input::placeholder,.field textarea::placeholder{color:#5e574a}
+
+  /* ---------- CTA ---------- */
+  .summary{font-size:13px;color:var(--muted);text-align:center;margin-bottom:12px;min-height:20px}
+  .summary b{color:var(--gold-soft);font-weight:600}
+  .cta{
+    width:100%;border:none;border-radius:99px;padding:18px;font-family:inherit;font-weight:700;font-size:15px;
+    letter-spacing:.14em;text-transform:uppercase;color:#1a1408;cursor:pointer;position:relative;overflow:hidden;
+    background:var(--gold-grad);background-size:200% auto;animation:shine 4s linear infinite;
+    box-shadow:0 12px 40px -12px rgba(212,175,55,.7);transition:transform .2s,opacity .2s;
+  }
+  .cta::after{
+    content:"";position:absolute;top:0;left:-60%;width:40%;height:100%;
+    background:linear-gradient(100deg,transparent,rgba(255,255,255,.55),transparent);transform:skewX(-20deg);
+    animation:sweep 2.8s ease-in-out infinite;
+  }
+  @keyframes sweep{0%{left:-60%}60%,100%{left:130%}}
+  .cta:active{transform:scale(.98)}
+  .cta:disabled{opacity:.35;cursor:not-allowed;animation:none;box-shadow:none}
+  .cta:disabled::after{display:none}
+  .err{color:var(--danger);font-size:13px;text-align:center;margin-top:10px;min-height:18px}
+
+  footer{text-align:center;margin-top:48px;font-size:12px;color:#5e574a;letter-spacing:.12em}
+
+  /* ---------- MODAL / TICKET ---------- */
+  .modal{position:fixed;inset:0;z-index:10;display:none;place-items:center;padding:16px;background:rgba(5,4,3,.85);backdrop-filter:blur(8px)}
+  .modal.show{display:grid;animation:fade .3s ease}
+  .ticket{
+    width:100%;max-width:380px;background:var(--surface-2);border-radius:22px;position:relative;
+    border:1px solid var(--line-strong);text-align:center;animation:pop .5s cubic-bezier(.2,1.4,.4,1) both;
+    box-shadow:0 30px 80px -20px rgba(212,175,55,.35);
+  }
+  .ticket-top{padding:32px 24px 22px}
+  .ticket .seal{font-size:34px;color:var(--gold);line-height:1}
+  .ticket h2{font-family:var(--serif);font-size:36px;font-weight:600;margin:10px 0 4px;line-height:1.05}
+  .ticket p{color:var(--muted);font-size:14px}
+  .perf{position:relative;border-top:2px dashed var(--line-strong);margin:0 18px}
+  .perf::before,.perf::after{content:"";position:absolute;top:-14px;width:26px;height:26px;border-radius:50%;background:#070605}
+  .perf::before{left:-32px}.perf::after{right:-32px}
+  .ticket-body{padding:20px 24px 26px}
+  .row{display:flex;justify-content:space-between;font-size:14px;padding:7px 0;gap:12px}
+  .row span:first-child{color:var(--muted);font-size:11px;letter-spacing:.16em;text-transform:uppercase;padding-top:2px}
+  .row span:last-child{font-weight:600;text-align:right}
+  .tid{font-family:var(--serif);font-size:22px;letter-spacing:.12em;margin-top:12px}
+  .actions{display:flex;flex-direction:column;gap:10px;margin-top:20px}
+  .btn-ghost{background:transparent;border:1px solid var(--line-strong);color:var(--gold-soft);border-radius:99px;padding:14px;font-family:inherit;font-weight:600;font-size:13px;letter-spacing:.1em;text-transform:uppercase;cursor:pointer;text-decoration:none;display:block}
+  .confetti{position:fixed;inset:0;pointer-events:none;z-index:11}
+  .confetti i{position:absolute;top:-12px;width:7px;height:12px;background:var(--gold-grad);animation:fall linear forwards}
+  @keyframes fall{to{transform:translateY(110vh) rotate(720deg);opacity:.2}}
+
+  @keyframes fadeUp{from{opacity:0;transform:translateY(18px)}to{opacity:1;transform:none}}
+  @keyframes fade{from{opacity:0}}
+  @keyframes pop{from{opacity:0;transform:scale(.85) translateY(20px)}}
+  .spinner{display:inline-block;width:14px;height:14px;border:2px solid #1a1408;border-right-color:transparent;border-radius:50%;animation:spin .7s linear infinite;vertical-align:-2px;margin-right:8px}
+  @media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+</style>
+</head>
+<body>
+<div class="dust" id="dust"></div>
+
+<main class="wrap">
+  <header class="hero">
+    <div class="ring"><div class="ring-inner" id="avatar"></div></div>
+    <div class="status"><span class="pulse"></span> Bookings open</div>
+    <h1 class="gold-text" id="name"></h1>
+    <p class="tagline" id="tagline"></p>
+    <a class="handle" id="handle" target="_blank" rel="noopener"></a>
+  </header>
+
+  <div class="divider">✦</div>
+
+  <section class="step">
+    <div class="step-head"><span class="step-num">i.</span><span class="step-title">Pick the vibe</span></div>
+    <div class="services" id="services"></div>
+  </section>
+
+  <section class="step">
+    <div class="step-head"><span class="step-num">ii.</span><span class="step-title">Choose a day</span><span class="step-hint">swipe →</span></div>
+    <div class="days" id="days"></div>
+  </section>
+
+  <section class="step">
+    <div class="step-head"><span class="step-num">iii.</span><span class="step-title">Lock a time</span></div>
+    <div class="times" id="times"><div class="empty">Select a day first</div></div>
+  </section>
+
+  <section class="step">
+    <div class="step-head"><span class="step-num">iv.</span><span class="step-title">Who's coming?</span></div>
+    <div class="field"><label for="fName">Your name</label><input id="fName" maxlength="60" placeholder="Full name" autocomplete="name"></div>
+    <div class="field"><label for="fInsta">Instagram</label><input id="fInsta" maxlength="40" placeholder="@yourhandle" autocapitalize="off" autocorrect="off"></div>
+    <div class="field"><label for="fNote">Anything I should know? <span style="text-transform:none;letter-spacing:0">(optional)</span></label><textarea id="fNote" rows="3" maxlength="300" placeholder="Drop a note…"></textarea></div>
+  </section>
+
+  <p class="summary" id="summary"></p>
+  <button class="cta" id="cta" disabled>Reserve my slot</button>
+  <p class="err" id="err"></p>
+
+  <footer>✦ &nbsp;BY INVITATION ONLY&nbsp; ✦</footer>
+</main>
+
+<div class="modal" id="modal" role="dialog" aria-modal="true">
+  <div class="ticket">
+    <div class="ticket-top">
+      <div class="seal">✦</div>
+      <h2 class="gold-text">You're on<br>the list</h2>
+      <p>Screenshot this &amp; send it to me</p>
+    </div>
+    <div class="perf"></div>
+    <div class="ticket-body" id="ticketBody"></div>
+  </div>
+</div>
+
+<script>
+/* =========================================================
+   ✏️  EDIT THIS PART ONLY — mee details ikkada marchandi
+   ========================================================= */
+const CONFIG = {
+  name: "Your Name",                 // Mee peru
+  instagram: "yourhandle",           // @ lekunda mee insta username
+  tagline: "Good company. Limited slots.",
+  photo: "",                         // Optional: photo link (e.g. "me.jpg"). Empty ga unte first letter chupistundi
+  scriptUrl: "",                     // Google Apps Script Web App URL (README chudandi)
+
+  daysAhead: 14,                     // Enni rojula varaku booking open
+  offDays: [],                       // Holidays: 0=Sun, 1=Mon ... 6=Sat  (e.g. [0] = Sunday off)
+  slots: ["11:00 AM", "1:00 PM", "4:00 PM", "6:00 PM", "7:30 PM", "9:00 PM"],
+
+  services: [
+    { title: "Coffee Chat",   desc: "30 min · just talk" },
+    { title: "Gaming Night",  desc: "2 hrs · bring snacks" },
+    { title: "Photo Walk",    desc: "1 hr · golden hour" },
+    { title: "Just Vibes",    desc: "Open-ended · surprise me" }
+  ]
+};
+/* ========================================================= */
+
+const $ = id => document.getElementById(id);
+const state = { service: null, date: null, time: null };
+let booked = new Set();
+const LS_KEY = "bookings_v1";
+
+/* ---------- helpers ---------- */
+const pad = n => String(n).padStart(2, "0");
+const keyOf = d => `${d.getFullYear()}-${pad(d.getMonth() + 1)}-${pad(d.getDate())}`;
+const prettyDate = k => {
+  const [y, m, d] = k.split("-").map(Number);
+  return new Date(y, m - 1, d).toLocaleDateString("en-IN", { weekday: "short", day: "numeric", month: "short" });
+};
+function slotDate(dateKey, label) {
+  const [y, m, d] = dateKey.split("-").map(Number);
+  const [, h, min, ap] = label.match(/(\d+):(\d+)\s*(AM|PM)/i);
+  let hr = Number(h) % 12; if (ap.toUpperCase() === "PM") hr += 12;
+  return new Date(y, m - 1, d, hr, Number(min));
+}
+const esc = s => String(s).replace(/[&<>"']/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
+function readLocal() { try { return JSON.parse(localStorage.getItem(LS_KEY)) || []; } catch { return []; } }
+function writeLocal(list) { try { localStorage.setItem(LS_KEY, JSON.stringify(list)); } catch {} }
+
+/* ---------- hero ---------- */
+function renderHero() {
+  document.title = `Book ${CONFIG.name} ✦`;
+  $("name").textContent = CONFIG.name;
+  $("tagline").textContent = CONFIG.tagline;
+  $("handle").textContent = "@" + CONFIG.instagram;
+  $("handle").href = "https://instagram.com/" + CONFIG.instagram;
+  $("avatar").innerHTML = CONFIG.photo
+    ? `<img src="${esc(CONFIG.photo)}" alt="">`
+    : `<span class="mono gold-text">${esc(CONFIG.name.trim()[0] || "✦")}</span>`;
+}
+
+/* ---------- services ---------- */
+function renderServices() {
+  $("services").innerHTML = CONFIG.services.map((s, i) => `
+    <button class="svc ${state.service === i ? "on" : ""}" data-i="${i}">
+      <span class="no">${pad(i + 1)}</span>
+      <span class="t">${esc(s.title)}</span>
+      <span class="d">${esc(s.desc)}</span>
+    </button>`).join("");
+}
+$("services").addEventListener("click", e => {
+  const b = e.target.closest(".svc"); if (!b) return;
+  state.service = Number(b.dataset.i); renderServices(); update();
+});
+
+/* ---------- days ---------- */
+function renderDays() {
+  const today = new Date(); today.setHours(0, 0, 0, 0);
+  let html = "";
+  for (let i = 0; i < CONFIG.daysAhead; i++) {
+    const d = new Date(today); d.setDate(today.getDate() + i);
+    const k = keyOf(d);
+    const off = CONFIG.offDays.includes(d.getDay());
+    const label = i === 0 ? "TODAY" : d.toLocaleDateString("en-US", { weekday: "short" }).toUpperCase();
+    html += `<button class="day ${state.date === k ? "on" : ""}" data-k="${k}" ${off ? "disabled" : ""}>
+      <span class="dw">${label}</span><span class="dn">${d.getDate()}</span>
+      <span class="dm">${d.toLocaleDateString("en-US", { month: "short" }).toUpperCase()}</span></button>`;
+  }
+  $("days").innerHTML = html;
+}
+$("days").addEventListener("click", e => {
+  const b = e.target.closest(".day"); if (!b || b.disabled) return;
+  state.date = b.dataset.k; state.time = null; renderDays(); renderTimes(); update();
+});
+
+/* ---------- times ---------- */
+function renderTimes() {
+  if (!state.date) { $("times").innerHTML = `<div class="empty">Select a day first</div>`; return; }
+  const now = new Date();
+  const btns = CONFIG.slots.map(t => {
+    const taken = booked.has(`${state.date}|${t}`);
+    const past = slotDate(state.date, t) <= now;
+    return `<button class="time ${state.time === t ? "on" : ""}" data-t="${t}" ${taken || past ? "disabled" : ""}>${t}</button>`;
+  });
+  const anyOpen = CONFIG.slots.some(t => !booked.has(`${state.date}|${t}`) && slotDate(state.date, t) > now);
+  $("times").innerHTML = btns.join("") + (anyOpen ? "" : `<div class="empty">Fully booked — try another day ✦</div>`);
+}
+$("times").addEventListener("click", e => {
+  const b = e.target.closest(".time"); if (!b || b.disabled) return;
+  state.time = b.dataset.t; renderTimes(); update();
+});
+
+/* ---------- form state ---------- */
+["fName", "fInsta"].forEach(id => $(id).addEventListener("input", update));
+function update() {
+  const ready = state.service !== null && state.date && state.time && $("fName").value.trim() && $("fInsta").value.trim();
+  $("cta").disabled = !ready;
+  const parts = [];
+  if (state.service !== null) parts.push(`<b>${esc(CONFIG.services[state.service].title)}</b>`);
+  if (state.date) parts.push(prettyDate(state.date));
+  if (state.time) parts.push(state.time);
+  $("summary").innerHTML = parts.join(" · ");
+  $("err").textContent = "";
+}
+
+/* ---------- data ---------- */
+async function loadBooked() {
+  if (CONFIG.scriptUrl) {
+    try {
+      const r = await fetch(CONFIG.scriptUrl + "?action=booked");
+      const j = await r.json();
+      booked = new Set(j.booked || []);
+    } catch (e) { console.warn("Could not load booked slots", e); }
+  } else {
+    booked = new Set(readLocal().map(b => `${b.date}|${b.time}`));
+  }
+  renderTimes();
+}
+
+async function save(payload) {
+  if (CONFIG.scriptUrl) {
+    // text/plain body avoids a CORS preflight with Google Apps Script
+    const r = await fetch(CONFIG.scriptUrl, { method: "POST", body: JSON.stringify(payload) });
+    const j = await r.json();
+    if (!j.ok) throw new Error(j.error || "Something went wrong");
+  } else {
+    const list = readLocal();
+    if (list.some(b => b.date === payload.date && b.time === payload.time)) throw new Error("That slot was just taken");
+    list.push(payload); writeLocal(list);
+  }
+}
+
+$("cta").addEventListener("click", async () => {
+  const btn = $("cta");
+  const insta = $("fInsta").value.trim().replace(/^@+/, "");
+  const payload = {
+    id: "BK" + Date.now().toString(36).toUpperCase().slice(-6),
+    name: $("fName").value.trim(),
+    instagram: "@" + insta,
+    note: $("fNote").value.trim(),
+    service: CONFIG.services[state.service].title,
+    date: state.date,
+    time: state.time
+  };
+  btn.disabled = true; btn.innerHTML = `<span class="spinner"></span>Reserving…`;
+  try {
+    await save(payload);
+    booked.add(`${payload.date}|${payload.time}`);
+    showTicket(payload);
+  } catch (e) {
+    $("err").textContent = e.message + " — please pick another time.";
+    await loadBooked(); state.time = null; renderTimes();
+  } finally {
+    btn.innerHTML = "Reserve my slot"; update();
+  }
+});
+
+/* ---------- ticket ---------- */
+function showTicket(p) {
+  $("ticketBody").innerHTML = `
+    <div class="row"><span>Guest</span><span>${esc(p.name)}</span></div>
+    <div class="row"><span>Vibe</span><span>${esc(p.service)}</span></div>
+    <div class="row"><span>Date</span><span>${prettyDate(p.date)}</span></div>
+    <div class="row"><span>Time</span><span>${esc(p.time)}</span></div>
+    <div class="tid gold-text">${p.id}</div>
+    <div class="actions">
+      <a class="cta" style="text-decoration:none;display:block" href="https://ig.me/m/${encodeURIComponent(CONFIG.instagram)}" target="_blank" rel="noopener">DM me on Insta</a>
+      <button class="btn-ghost" id="done">Done</button>
+    </div>`;
+  $("modal").classList.add("show");
+  $("done").onclick = resetAll;
+  confetti();
+}
+function resetAll() {
+  $("modal").classList.remove("show");
+  state.service = state.date = state.time = null;
+  ["fName", "fInsta", "fNote"].forEach(id => $(id).value = "");
+  renderServices(); renderDays(); renderTimes(); update();
+  window.scrollTo({ top: 0 });
+}
+function confetti() {
+  const c = document.createElement("div"); c.className = "confetti";
+  for (let i = 0; i < 60; i++) {
+    const p = document.createElement("i");
+    p.style.left = Math.random() * 100 + "vw";
+    p.style.animationDuration = 2 + Math.random() * 2.5 + "s";
+    p.style.animationDelay = Math.random() * .6 + "s";
+    p.style.transform = `rotate(${Math.random() * 360}deg)`;
+    c.appendChild(p);
+  }
+  document.body.appendChild(c); setTimeout(() => c.remove(), 5500);
+}
+
+/* ---------- gold dust ---------- */
+(function dust() {
+  const d = $("dust");
+  for (let i = 0; i < 22; i++) {
+    const s = document.createElement("span");
+    s.style.left = Math.random() * 100 + "vw";
+    s.style.animationDuration = 10 + Math.random() * 14 + "s";
+    s.style.animationDelay = -Math.random() * 20 + "s";
+    s.style.transform = `scale(${.4 + Math.random()})`;
+    d.appendChild(s);
+  }
+})();
+
+/* ---------- init ---------- */
+renderHero(); renderServices(); renderDays(); update(); loadBooked();
+</script>
+</body>
+</html>
